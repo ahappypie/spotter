@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
   "org.apache.hadoop" % "hadoop-common" % hadoopVersion % "provided",
   "org.apache.hadoop" % "hadoop-aws" % hadoopVersion % "provided",
   "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.271" % "provided",
-  "org.apache.hudi" %% "hudi-spark-bundle" % "0.5.2-SNAPSHOT" from "file:///Users/bbagdasarian/incubator-hudi/packaging/hudi-spark-bundle/target/hudi-spark-bundle_2.12-0.5.2-SNAPSHOT.jar"
+  "org.apache.hudi" %% "hudi-spark-bundle" % "0.5.1-incubating"
 )
 
 dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7"
