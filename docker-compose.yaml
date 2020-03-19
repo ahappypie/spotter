@@ -15,6 +15,59 @@ services:
       MINIO_ACCESS_KEY: 'minio'
       MINIO_SECRET_KEY: 'minio123'
 
+  metastore:
+    build:
+      context: ./hive
+      dockerfile: HiveMetastoreHudi.Dockerfile
+    image: quay.io/ahappypie/hivemetastorehudi:2.3.6-0.5.1-incubating
+    container_name: metastore
+    ports:
+    - '9083:9083'
+    depends_on:
+      - mariadb
+    networks:
+      - spotter
+
+  mariadb:
+    image: mariadb:10.3
+    container_name: mariadb
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    networks:
+      - spotter
+    environment:
+      MYSQL_ROOT_PASSWORD: h1v3
+
+  presto-coordinator:
+    image: quay.io/ahappypie/presto/330:coordinator
+    container_name: presto-coordinator
+    ports:
+    - '8080:8080'
+    volumes:
+    - ./presto/catalog:/presto/server/etc/catalog
+    - ./data/presto/coordinator:/var/presto/data
+    networks:
+      - spotter
+    environment:
+      NODE_ID: presto-coordinator-0
+
+  presto-worker-1:
+    image: quay.io/ahappypie/presto/330:worker
+    container_name: presto-worker-1
+    ports:
+    - '18081:8080'
+    volumes:
+    - ./presto/catalog:/presto/server/etc/catalog
+    - ./data/presto/worker1:/var/presto/data
+    depends_on:
+      - presto-coordinator
+    networks:
+      - spotter
+    environment:
+      NODE_ID: presto-worker-1
+
 networks:
   spotter:
     external: true

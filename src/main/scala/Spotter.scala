@@ -26,6 +26,7 @@ object Spotter extends SparkSessionWrapper {
 
     val data = df.select(from_confluent_avro(df.col("value"), schemaRegistryConfig) as 'data).select("data.*")
     data.printSchema
+    println(s"number of records = ${data.count}")
 //
 //    import org.apache.spark.sql.functions.{min, avg, max, stddev, round}
 //
@@ -77,12 +78,15 @@ object Spotter extends SparkSessionWrapper {
       .withColumn("pp", concat_ws("/", $"provider", $"instance"))
 
     hudiWriteData.write.format("org.apache.hudi")
-      .options(org.apache.hudi.QuickstartUtils.getQuickstartWriteConfigs)
+      .option(HIVE_SYNC_ENABLED_OPT_KEY, "true")
+      .option(HIVE_DATABASE_OPT_KEY, "spotter")
+      .option(HIVE_TABLE_OPT_KEY, "aws")
+      .option(HIVE_URL_OPT_KEY, "jdbc:hive2://localhost:9083")
       .option(PRECOMBINE_FIELD_OPT_KEY, "timestamp")
       .option(RECORDKEY_FIELD_OPT_KEY, "rk")
       .option(PARTITIONPATH_FIELD_OPT_KEY, "pp")
       .option(TABLE_NAME, "spotter")
-      .mode(Overwrite)
+      .mode(Append)
       .save("s3a://spotter/hudi")
 
     println(s"took ${Instant.now().minusMillis(startTime.toEpochMilli).toEpochMilli} ms")

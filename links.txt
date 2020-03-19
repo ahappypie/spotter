@@ -1,0 +1,5 @@
+https://stackoverflow.com/questions/49925594/akka-actor-receive-pattern-match-by-generic-type
+https://www.programcreek.com/scala/org.apache.kafka.clients.consumer.KafkaConsumer
+https://kafka.apache.org/24/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html
+https://github.com/apache/incubator-hudi/pull/1226
+https://github.com/minio/cookbook/blob/master/docs/apache-spark-with-minio.md

@@ -6,6 +6,8 @@ scalaVersion := "2.12.10"
 
 lazy val sparkVersion = "2.4.4"
 lazy val hadoopVersion = "2.10.0"
+lazy val hiveVersion = "2.3.6"
+lazy val hudiVersion = "0.5.1-incubating"
 
 resolvers += "confluent" at "https://packages.confluent.io/maven"
 
@@ -16,7 +18,9 @@ libraryDependencies ++= Seq(
   "org.apache.hadoop" % "hadoop-common" % hadoopVersion % "provided",
   "org.apache.hadoop" % "hadoop-aws" % hadoopVersion % "provided",
   "com.amazonaws" % "aws-java-sdk-bundle" % "1.11.271" % "provided",
-  "org.apache.hudi" %% "hudi-spark-bundle" % "0.5.1-incubating"
+  "org.apache.hudi" %% "hudi-spark-bundle" % hudiVersion,
+  "org.apache.hudi" % "hudi-hive-bundle" % hudiVersion,
+  "org.apache.hive" % "hive-common" % hiveVersion % "provided",
 )
 
 dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.7"
